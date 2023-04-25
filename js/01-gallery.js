@@ -34,21 +34,23 @@ function onClick(evt) {
         ({ original }) => original === originalImage
     );
 
-    const instance = basicLightbox.create(`
-        <img src="${currentImage.original}" alt="${currentImage.description}">
-    `);
+    const instance = basicLightbox.create(
+        `<img src="${currentImage.original}" alt="${currentImage.description}">`,
+        {
+            onClose: () => {
+                document.removeEventListener("keydown", escapeModal);
+            },
+        }
+    );
     instance.show();
 
     if (instance.visible()) {
         document.addEventListener("keydown", escapeModal);
     }
-    
+
     function escapeModal(evt) {
         if (evt.key === "Escape") {
-            instance.close();          
-            document.removeEventListener("keydown", escapeModal);
+            instance.close();
         }
     }
 }
-
-
